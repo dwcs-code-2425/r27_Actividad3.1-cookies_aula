@@ -1,7 +1,7 @@
 <?php
 
 require_once 'catalogo.php';
-
+const MAX_PRODUCTS_RECENTLY_VIEWED =5;
 // Obtener el identificador del producto solicitado
 $id = $_GET['id'] ?? 0;
 
@@ -22,8 +22,13 @@ if (isset($_COOKIE["historial"])) {
     $pos = array_search($id, $array);
     if ($pos !== false) {
         unset($array[$pos]);
+        $array = array_values($array);
     }
     //array_push($array, $id);
+    if(count($array)==MAX_PRODUCTS_RECENTLY_VIEWED){
+        unset($array[0]);
+        $array = array_values($array);
+    }
     $array[] = $id;
 
     $cadena = implode(",", $array);
